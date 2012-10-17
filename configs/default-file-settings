@@ -1,0 +1,164 @@
+Working File Settings::	
+	
+					
+		Configure SSHD Config: 
+		
+		
+									
+					Type: cd /etc/sysconfig/
+					Type: nano network
+					
+					etc/sysconfig/network	(Ensure that the file looks like the configuration inside the dashes.)
+					----------------------------------
+					NETWORKING=yes
+					HOSTNAME=mediaserver.ronnieblue
+					----------------------------------
+					
+		Configure SSHD Config: 
+		
+										
+					
+					Type: cd /etc/sysconfig/network-scripts/
+					Type: nano (NIC Device "ifcfg-p3p1" or "ifcfg-eth0")
+					
+					etc/sysconfig/network-scripts/(NIC Device "ifcfg-p3p1" or "ifcfg-eth0")
+					---------------------------------------------------------------------------
+					DEVICE="p3p1"				<-----------#THIS WILL BE DETERMINED BY THE COMPUTER
+					BOOTPROTO="dhcp"		<-----------#ENSURE THIS SAYSO "dhcp"
+					HWADDR="00:21:9B:D2:E2:B2"		#DO NOT CHANGE
+					IPV6INIT="yes"								#DO NOT CHANGE
+					IPV6_AUTOCONF="yes"					#DO NOT CHANGE
+					NM_CONTROLLED="yes"				#DO NOT CHANGE
+					ONBOOT="yes"				<-----------#ENSURE THIS SAYS "yes"
+					TYPE="Ethernet"							#DO NOT CHANGE
+					UUID="2d4e7ee7-5bff-49a2-bc27-79bd98271b17"		#DO NOT CHANGE
+					---------------------------------------------------------------------------
+					
+					
+		Configure SSHD Config: 
+		
+		
+					
+					etc/ssh/sshd_config
+					-------------------------------------------------
+					Remove the "#" from the line below
+					#PORT=22
+					
+					It should read
+					PORT=22
+					-------------------------------------------------
+
+	
+		
+		Configure yum Repos: 
+		
+		
+					etc/yum.repos.d/
+					
+					Plex: "plex.repo"
+					----------------------------------------------------------------------
+					[PlexRepo]
+					name=PlexRepo
+					baseurl=http://plexapp.com/rpmrepo/release/$basearch/
+					enabled=1
+					gpgkey=https://plexapp.com/plex_pub_key.pub
+					gpgcheck=1
+					----------------------------------------------------------------------
+					
+					HandBrake: "linuxtech.repo"
+					----------------------------------------------------------------------
+					[linuxtech]
+					name=LinuxTECH
+					baseurl=http://pkgrepo.linuxtech.net/el6/release/
+					enabled=1
+					gpgcheck=1
+					gpgkey=http://pkgrepo.linuxtech.net/el6/release/RPM-GPG-KEY-LinuxTECH.NET
+					----------------------------------------------------------------------
+		
+		
+		
+		Configure Plex Configs: 
+		
+		
+					etc/sysconfig/PlexMediaServer
+					---------------------------------------------------------------------------------
+					# Plex Media Server Config file.
+
+					# Set Plex User
+					PLEX_USER=plex
+					# Set home of Plex Media Server
+					PLEX_MEDIA_SERVER_HOME=/usr/lib/plexmediaserver
+
+					# Set home for Plex metadata
+					PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR="`getent passwd $PLEX_USER|awk -F : '{print $6}'`/Library/Application Support"
+
+					# the number of plugins that can run at the same time
+					PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS=6
+
+					# ulimit -s $PLEX_MEDIA_SERVER_MAX_STACK_SIZE
+					PLEX_MEDIA_SERVER_MAX_STACK_SIZE=10000
+
+					# ulimit -l $PLEX_MEDIA_SERVER_MAX_LOCK_MEM
+					PLEX_MEDIA_SERVER_MAX_LOCK_MEM=3000
+					
+					# ulimit -n $PLEX_MEDIA_SERVER_MAX_OPEN_FILES
+					PLEX_MEDIA_SERVER_MAX_OPEN_FILES=4096
+
+					# where the mediaserver should store the transcodes
+					PLEX_MEDIA_SERVER_TMPDIR=/tmp
+
+					# Enable syslog for Plex logging.
+					# uncomment to enable
+					# export PLEX_MEDIA_SERVER_USE_SYSLOG=true
+
+					# uncomment to set it to alternative support dir, eg. /opt/plex
+					# NOTE: Plex user must be able to write to this dir
+					#
+					PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR="/opt/plex/Library/Application Support"
+
+					export LD_LIBRARY_PATH="${PLEX_MEDIA_SERVER_HOME}"
+					export TMPDIR="${PLEX_MEDIA_SERVER_TMPDIR}"
+					export PLEX_MEDIA_SERVER_HOME=$PLEX_MEDIA_SERVER_HOME
+					export PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR=$PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR
+					export PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS=$PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS
+					export PLEX_MEDIA_SERVER_TMPDIR=$PLEX_MEDIA_SERVER_TMPDIR
+					export LD_LIBRARY_PATH=$PLEX_MEDIA_SERVER_HOME
+					export LC_ALL="en_US.UTF-8"
+					export LANG="en_US.UTF-8"
+					ulimit -l $PLEX_MEDIA_SERVER_MAX_LOCK_MEM
+					ulimit -s $PLEX_MEDIA_SERVER_MAX_STACK_SIZE
+					ulimit -n $PLEX_MEDIA_SERVER_MAX_OPEN_FILES
+					---------------------------------------------------------------------------------			
+
+		Configure IP tables for Firewall: 
+		
+					etc/sysconfig/iptables
+					
+					iptables (Found in the configs directory)
+					------------------------------------------------------------------
+					# Firewall configuration written by system-config-firewall
+					# Manual customization of this file is not recommended.
+					*filter
+					:INPUT ACCEPT [0:0]
+					:FORWARD ACCEPT [0:0]
+					:OUTPUT ACCEPT [0:0]
+					-A INPUT -m state --state NEW -m tcp -p tcp --dport 32400 -j ACCEPT
+					-A INPUT -m state --state NEW -m udp -p udp --dport 32400 -j ACCEPT
+					-A INPUT -m state --state NEW -m udp -p udp --dport 32469 -j ACCEPT
+					-A INPUT -p udp --dport 5353 -d 224.0.0.251 -j ACCEPT
+					-A OUTPUT -p udp --dport 5353 -d 224.0.0.251 -j ACCEPT
+					-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+					-A INPUT -p icmp -j ACCEPT
+					-A INPUT -i lo -j ACCEPT
+					-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+					-A INPUT -j REJECT --reject-with icmp-host-prohibited
+					-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+					COMMIT
+					------------------------------------------------------------------
+
+		*Reboot the system for changes to take effect. After the system has rebooted, ensure that network connectivity is available with "ifconfig".
+		** Terminal into the machine via the OpenSSH by its IP address, Port 22, and the root login.  	
+
+					
+					
+					

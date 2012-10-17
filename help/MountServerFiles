@@ -1,0 +1,10 @@
+#!usr/bin/perl -w
+#MountServerFiles
+use strict;
+
+my $mountStatus;
+my $mountFrom = "/dev/sda1";
+my $mountTo = "/MediaServerTools";
+
+system("mount $mountFrom $mountTo");
+print "Disk Mounted Succesfully\n";
