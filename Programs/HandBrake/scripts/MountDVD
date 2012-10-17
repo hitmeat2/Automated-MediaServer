@@ -3,7 +3,7 @@
 use strict;
 
 my $mountStatus;
-my $mountFrom = "/dev/cdrom";
+my $mountFrom = "/dev/dvd";
 my $mountTo = "/opt/MediaServerTools/Programs/HandBrake/cdrom";
 
 system("mount $mountFrom $mountTo");

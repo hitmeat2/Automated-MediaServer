@@ -98,13 +98,29 @@ sleep 1;
 
 #Copy the Update & Program Files into the Newly created Programs Directories
 ####I need to check for file existence and overwriting capabilities
-$HandBrakescripts_Files1F = "/MediaServerTools/MediaServer/Programs/HandBrake/scripts/RIP-DVD";
-$HandBrakescripts_Files1T = "/opt/MediaServerTools/Programs/HandBrake/scripts/RIP-DVD";
-$HandBrakescripts_Files2F;
-$HandBrakescripts_Files2T;
-$HandBrakescripts_Files3F;
-$HandBrakescripts_Files3T;
+my $handbrakefromdir = "/MediaServerTools/MediaServer/Programs/HandBrake/scripts/";
+my $handbraketodir = "/opt/MediaServerTools/Programs/HandBrake/scripts/"
+my $hbFile1 = "RIP-DVD";
+my $hbFile2 = "MountDVD";
+my $hbFile3 = "unMountDVD";
+my $hbFile4 = "";
+my $hbFile5 = "";
+my $hbFile6 = "";
+my $hbFile7 = "";
+my $hbFile8 = "";
+my $hbFile9 = "";
+my $hbFile10 = "";
+$HandBrakescripts_Files1F = $handbrakefromdir . $hbFile1;
+$HandBrakescripts_Files1T = $handbraketodir . $hbFile1;
+$HandBrakescripts_Files2F =  $handbrakefromdir . $hbFile2;
+$HandBrakescripts_Files2T = $handbraketodir . $hbFile2;
+$HandBrakescripts_Files3F =  $handbrakefromdir . $hbFile3;
+$HandBrakescripts_Files3T = $handbraketodir . $hbFile3;
+$HandBrakescripts_Files4F =  $handbrakefromdir . $hbFile4;
+$HandBrakescripts_Files4T = $handbraketodir . $hbFile4;
 copy($HandBrakescripts_Files1F, $HandBrakescripts_Files1T) or die "HandBrake Script Files could not be copied $!";
+copy($HandBrakescripts_Files2F, $HandBrakescripts_Files2T) or die "HandBrake Script Files could not be copied $!";
+copy($HandBrakescripts_Files3F, $HandBrakescripts_Files3T) or die "HandBrake Script Files could not be copied $!";
 print "4. Program Script files copied Successfully \n";
 sleep 1;
 

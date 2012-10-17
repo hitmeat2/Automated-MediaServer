@@ -2,16 +2,56 @@
 #RIP-DVD
 use strict;
 
-#
+
+system("clear");
+print "\n\n\n\n";
+
+#Variables
 my $file_to_Rip = "/opt/MediaServerTools/Programs/HandBrake/cdrom/VIDEO_TS";
-my $rip_file_to = "/opt/MediaServerTools/Programs/HandBrake/RAW/RIPPED";
+my $rip_file_to = "/opt/MediaServerTools/Programs/HandBrake/RAW/RIPPED/";
+my $movie_directory = "/home/plex/Movies/";
 my $rip_file_format = ".mp4";
+my $script_directory = "/opt/MediaServerTools/Programs/HandBrake/scripts/";
+my $get_rip_file_name;
 
 
-#system("HandBrakeCLI -i $file_to_Rip -o $rip_file_to -e x264 -q 22 -B 128 -t 1");
-print 'HandBrakeCLI -i ' . $file_to_Rip . ' -o ' . $rip_file_to . $rip_file_format . ' -e x264 -q 22 -B 128 -t 1 ';
+#Mount DVD
+print "Mounting DVD\n\n";
+sleep 2;
+system('perl ' . $script_directory . 'MountDVD');
+print "DVD Mounted \n\n\n\n";
+
+
+print "What is the name of the Movie?  :  ";
+$get_rip_file_name = <STDIN>;
+chomp $get_rip_file_name;
+$get_rip_file_name=~ s/\s//g;
+sleep 1;
+
+print "Ripping Movies...";
+sleep 1;
+my $ripped_file_output = $rip_file_to . $get_rip_file_name . $rip_file_format;
+system('HandBrakeCLI -i ' . $file_to_Rip . ' -o ' . $ripped_file_output . ' -e x264 -q 22 -B 128 -t 1 ');
+print "\n\n\n";
+print "Disk Ripped Succesfully\n\n";
+sleep 2;
+system("clear");
+
+
+#Move Ripped File to the Movies Directory
+print "Moving Ripped file to Local Movies Directory";
+sleep 3;
+my $move_dir_withFile = $movie_directory . $get_rip_file_name . $rip_file_format;
+system('mv ' . $ripped_file_output . ' ' . $move_dir_withFile);
 print "\n";
-#print "Disk unMounted Succesfully\n";
+system("clear");
+print "File Moved Succesfully\n\n\n";
+sleep 2;
+
+#Unmount DVD
+sleep 1;
+system('perl ' . $script_directory . 'unMountDVD');
+print "DVD Released\n\n\n\n\n\n";
 
 
 
