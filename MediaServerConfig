@@ -80,6 +80,7 @@ make_path(
 '/opt/MediaServerTools/Programs/HandBrake/Updates' ,
 '/opt/MediaServerTools/Programs/HandBrake/RAW/RIPPED' ,
 '/opt/MediaServerTools/Programs/HandBrake/scripts' ,
+'/opt/MediaServerTools/Programs/HandBrake/cdrom' ,
 '/opt/MediaServerTools/Programs/Plex/Updates' , 
 '/opt/plex' , 
 '/home/plex/Movies'
