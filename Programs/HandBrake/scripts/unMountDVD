@@ -1,0 +1,10 @@
+#!usr/bin/perl -w
+#unMountDVD
+use strict;
+
+my $mountStatus;
+my $mountFrom = "/dev/cdrom";
+my $mountTo = "/opt/MediaServerTools/Programs/HandBrake/cdrom";
+
+system("umount $mountTo");
+print "Disk unMounted Succesfully\n";

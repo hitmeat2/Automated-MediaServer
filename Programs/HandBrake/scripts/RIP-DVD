@@ -1,0 +1,17 @@
+#!usr/bin/perl -w
+#RIP-DVD
+use strict;
+
+#
+my $file_to_Rip = "/opt/MediaServerTools/Programs/HandBrake/cdrom/VIDEO_TS";
+my $rip_file_to = "/opt/MediaServerTools/Programs/HandBrake/RAW/RIPPED";
+my $rip_file_format = ".mp4";
+
+
+#system("HandBrakeCLI -i $file_to_Rip -o $rip_file_to -e x264 -q 22 -B 128 -t 1");
+print 'HandBrakeCLI -i ' . $file_to_Rip . ' -o ' . $rip_file_to . $rip_file_format . ' -e x264 -q 22 -B 128 -t 1 ';
+print "\n";
+#print "Disk unMounted Succesfully\n";
+
+
+
