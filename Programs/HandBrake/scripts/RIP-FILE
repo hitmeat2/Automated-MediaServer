@@ -1,29 +1,5 @@
-#!usr/bin/perl -w
+#!/usr/bin/perl -w
 #RIP-FILE
 use strict;
 
-#
-my $file_to_Rip = "/opt/MediaServerTools/Programs/HandBrake/RAW/";
-my $rip_file_to = "/opt/MediaServerTools/Programs/HandBrake/RAW/RIPPED";
-my $rip_file_format = ".mp4";
-my $rip_file_name;
-my $rip_file_name2;
-
-
-
-system("clear");
-print "\n\n\n\n";
-print 'What is the Current file name with Extension. : '; 
-$rip_file_name = <STDIN>;
-chomp $rip_file_name;
-sleep 1;
-
-print 'What is the Name of the Movie? : '; 
-$rip_file_name2 = <STDIN>;
-$rip_file_name2=~ s/\s//g;
-
-print ('HandBrakeCLI -i ' . $file_to_Rip . $rip_file_name . ' -o ' . $rip_file_to . '/' . $rip_file_name2 . $rip_file_format . ' -e x264 -q 22 -B 128 -t 1 ' . "\n");
-#system('HandBrakeCLI -i ' . $file_to_Rip . ' -o ' . $rip_file_to . '/' . $rip_file_name . $rip_file_format . ' -e x264 -q 22 -B 128 -t 1 ');
-
-print "FILE Rip Process has completed.\n";
-
+print "\n\nThis Feature is not available yet.\n\n";

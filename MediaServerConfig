@@ -52,6 +52,8 @@ my $ServerTools_Files1F;
 my $ServerTools_Files1T;
 my $ServerTools_Files2F;
 my $ServerTools_Files2T;
+my $ServerTools_Files3F;
+my $ServerTools_Files3T;
 
 #Install Needed Core Programs
 system("clear");
@@ -99,7 +101,7 @@ sleep 1;
 #Copy the Update & Program Files into the Newly created Programs Directories
 ####I need to check for file existence and overwriting capabilities
 my $handbrakefromdir = "/MediaServerTools/MediaServer/Programs/HandBrake/scripts/";
-my $handbraketodir = "/opt/MediaServerTools/Programs/HandBrake/scripts/"
+my $handbraketodir = "/opt/MediaServerTools/Programs/HandBrake/scripts/";
 my $hbFile1 = "RIP-DVD";
 my $hbFile2 = "MountDVD";
 my $hbFile3 = "unMountDVD";
@@ -128,13 +130,17 @@ sleep 1;
 ####I need to check for file existence and overwriting capabilities
 $ServerTools_Files1F = "/MediaServerTools/MediaServer/help/MountServerFiles";
 $ServerTools_Files1T = "/MountServerFiles";
-$ServerTools_Files2F = "/MediaServerTools/MediaServer/help/unMountServerFiles";
-$ServerTools_Files2T = "/unMountServerFiles";
-copy($ServerTools_Files1F, $ServerTools_Files1T) or die "MediaServerTools Helper Files could not be created $!";
-#copy($ServerTools_Files2F, $ServerTools_Files2T) or die "MediaServerTools Helper Files could not be created $!";
+$ServerTools_Files2F = "/MediaServerTools/MediaServer/help/HandBrake";
+$ServerTools_Files2T = "/HandBrake";
+$ServerTools_Files3F = "/MediaServerTools/MediaServer/help/PlexServer";
+$ServerTools_Files3T = "/PlexServer";
+copy($ServerTools_Files1F, $ServerTools_Files1T) or die "MediaServerTools Helper Files 1 could not be created $!";
+copy($ServerTools_Files2F, $ServerTools_Files2T) or die "MediaServerTools Helper Files 2 could not be created $!";
+copy($ServerTools_Files3F, $ServerTools_Files3T) or die "MediaServerTools Helper Files 3 could not be created $!";
 my $mode = 0755;   
 chmod $mode, $ServerTools_Files1T;	
-#chmod $mode, $ServerTools_Files2T;
+chmod $mode, $ServerTools_Files2T;
+chmod $mode, $ServerTools_Files3T;
 print "5. Helper files copied Successfully \n";
 sleep 1;
 
