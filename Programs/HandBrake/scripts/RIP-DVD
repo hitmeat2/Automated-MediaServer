@@ -2,8 +2,21 @@
 #RIP-DVD
 use strict;
 
+sub myHeader {
+		print "  :::::::: Handbrake DVD Ripping Program :::::::::  ";
+}
+sub myunMountPeskys {
+		#Unmount any Drives that could cause a mishap
+		system('perl /opt/MediaServerTools/Programs/HandBrake/scripts/unMountDVD');
+		system ('perl umount /MediaServerTools');	
+}
+myunMountPeskys();
 
+
+sleep 1;
 system("clear");
+
+myHeader();
 print "\n\n\n\n";
 
 #Variables
@@ -16,9 +29,9 @@ my $get_rip_file_name;
 
 
 #Mount DVD
-print "Mounting DVD\n\n";
+print "Mounting DVD\nPlease Wait...\n\n";
 sleep 2;
-system('perl ' . $script_directory . 'MountDVD');
+system('perl ' . $script_directory . 'MountDVD') == 0 or die "Failed to Mount DVD, Check that the device is ready.\n";
 print "DVD Mounted \n\n\n\n";
 
 
@@ -31,7 +44,7 @@ sleep 1;
 print "Ripping Movies...";
 sleep 1;
 my $ripped_file_output = $rip_file_to . $get_rip_file_name . $rip_file_format;
-system('HandBrakeCLI -i ' . $file_to_Rip . ' -o ' . $ripped_file_output . ' -e x264 -q 22 -B 128 -t 1 ');
+system('HandBrakeCLI -i ' . $file_to_Rip . ' -o ' . $ripped_file_output . ' -e x264 -q 20 -B 160 -t 1 ') == 0 or die "Failed to RIP DVD\n\n";
 print "\n\n\n";
 print "Disk Ripped Succesfully\n\n";
 sleep 2;
@@ -39,18 +52,21 @@ system("clear");
 
 
 #Move Ripped File to the Movies Directory
+myHeader();
 print "Moving Ripped file to Local Movies Directory";
 sleep 3;
 my $move_dir_withFile = $movie_directory . $get_rip_file_name . $rip_file_format;
-system('mv ' . $ripped_file_output . ' ' . $move_dir_withFile);
+system('mv ' . $ripped_file_output . ' ' . $move_dir_withFile) == 0 or die "Failed to Move Ripped File to Movies Directory\n\n";
 print "\n";
 system("clear");
-print "File Moved Succesfully\n\n\n";
+
+myHeader();
+print "\n\nFile Moved Succesfully\n\n\n";
 sleep 2;
 
 #Unmount DVD
 sleep 1;
-system('perl ' . $script_directory . 'unMountDVD');
+system('perl ' . $script_directory . 'unMountDVD') == 0 or die "Failed to unMount DVD\n\n";
 print "DVD Released\n\n\n\n\n\n";
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-#HandBrake
+#PlexServer
 use strict;
 use Switch;
 
@@ -10,15 +10,15 @@ print "Please select a number between 1 and 3: \n\n";
 print '1) Rip a DVD';print "\n"; 
 print '2) Rip a File'; print "\n"; 
 print '3) Exit the Program';
-print "\n\n\n";
+print "\n\n\n -----> ";
 my $selection = <STDIN>;
 chomp ($selection);
 
 
 #print $selection;
 switch ($selection) {
-               case 1	{ system("perl /opt/MediaServerTools/Programs/HandBrake/scripts/RIP-DVD"); }
-               case 2	{ system("perl /opt/MediaServerTools/Programs/HandBrake/scripts/RIP-FILE"); }
+            case 1	{ system("perl /opt/MediaServerTools/Programs/HandBrake/scripts/RIP-DVD") == 0 or die "Failed to run HandBrake RIP-DVD"; }
+               case 2	{ system("perl /opt/MediaServerTools/Programs/HandBrake/scripts/RIP-FILE") == 0 or die "Failed to run HandBrake RIP-FILE"; }
                case 3	{ die "Exiting the HandBrake Program"; }
        }
 

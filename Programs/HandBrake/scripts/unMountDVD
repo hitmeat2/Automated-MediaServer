@@ -2,9 +2,7 @@
 #unMountDVD
 use strict;
 
-my $mountStatus;
-my $mountFrom = "/dev/dvd";
 my $mountTo = "/opt/MediaServerTools/Programs/HandBrake/cdrom";
 
-system("umount $mountTo");
+system("umount $mountTo") == 0 or die "\n";
 print "Disk unMounted Succesfully\n";

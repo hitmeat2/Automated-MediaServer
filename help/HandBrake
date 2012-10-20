@@ -3,22 +3,27 @@
 use strict;
 use Switch;
 
+sub myHeader {
+		print "  :::::::: Handbrake DVD \& FILE Ripping Program :::::::::  ";
+}
 
 system("clear");
+myHeader();
 print "\n\n\n";
 print "Please select a number between 1 and 3: \n\n";
 print '1) Rip a DVD';print "\n"; 
 print '2) Rip a File'; print "\n"; 
 print '3) Exit the Program';
-print "\n\n\n";
+print "\n\nI Love You January\n";
+print "\n\n------> ";
 my $selection = <STDIN>;
 chomp ($selection);
 
 
 #print $selection;
 switch ($selection) {
-               case 1	{ system("perl /opt/MediaServerTools/Programs/HandBrake/scripts/RIP-DVD"); }
-               case 2	{ system("perl /opt/MediaServerTools/Programs/HandBrake/scripts/RIP-FILE"); }
-               case 3	{ die "Exiting the HandBrake Program"; }
+               case 1	{ system("perl /opt/MediaServerTools/Programs/HandBrake/scripts/RIP-DVD") == 0 or die "Failed to run HandBrake RIP-DVD\nExiting Program.\n\n"; }
+               case 2	{ system("perl /opt/MediaServerTools/Programs/HandBrake/scripts/RIP-FILE") == 0 or die "Failed to run HandBrake RIP-FILE\nExiting Program.\n\n"; }
+               case 3	{ die "\n\nExiting the HandBrake Program\n\n"; }
        }
 

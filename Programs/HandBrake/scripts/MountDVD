@@ -3,8 +3,17 @@
 use strict;
 
 my $mountStatus;
-my $mountFrom = "/dev/dvd";
-my $mountTo = "/opt/MediaServerTools/Programs/HandBrake/cdrom";
+my $mountFrom = '/dev/dvd';
+my $mountFrom1 = '/dev/dvd1';
+my $mountTo = '/opt/MediaServerTools/Programs/HandBrake/cdrom';
 
 system("mount $mountFrom $mountTo");
+if ($? != 0){
+	print "\nFirst Drive is not Available. Checking Additional Drives. $!\n";
+	system("mount $mountFrom1 $mountTo");
+		if($? != 0){
+		print "\n\n*No Drives Are Available, Exiting Mount Program. $!\n\n";
+		die "\n";
+		}
+}
 print "Disk Mounted Succesfully\n";

@@ -1,10 +1,140 @@
-#!usr/bin/perl -w
+#!usr/bin/perl
 #MountServerFiles
 use strict;
+use File::Find;
+use File::Basename;
+no warnings 'redefine';
 
-my $mountStatus;
-my $mountFrom = "/dev/sda1";
+#Create a temporary file to handle requests
+sub createTMP {
+					my $str = "4";
+					open FILE, ">/tmp/tmp_want_status.txt" or die $!;
+					print FILE $str;
+					close FILE;
+}
+
+createTMP();
+
+#Creates the header for my program
+sub myheader {
+		print "  :::::::: Mount Server Files Program :::::::::  ";
+}
+
+#Select The Drive to Mount
+#print "\n\nWhich Device are you using?\n";
+#print '** If you are unsure type "sdb1" without quotations.'; print "\n";
+#print '   "sda1" may also work. Try "sdb1" First! **';
+#print "\n\n";
+#print '-----> ';
+#my $deviceDrive = <STDIN>;
+#chomp $deviceDrive;
+
+#Drive Variables including selection
+#my $mountFrom = "/dev/" . $deviceDrive;
+my $mountFroma = "/dev/sda1";
+my $mountFromb = "/dev/sdb1";
 my $mountTo = "/MediaServerTools";
 
-system("mount $mountFrom $mountTo");
-print "Disk Mounted Succesfully\n";
+
+
+sub findWanted {
+
+find( \&wanted, '/MediaServerTools/MediaServer');
+
+}
+sub wanted { 
+		my $file_pattern="MediaServerConfig";
+		my $specialFile = $File::Find::name;
+		#$specialFile =~ s,/,\\,g;     #Reverses the backwacks
+		return unless -f $specialFile;    #Only returns files, NO directories
+		return unless $specialFile =~ /$file_pattern/;    #Pin Point A file pattern
+		
+		#print "Mounted Successfully\n";
+		#return 
+		#print "$specialFile\n";
+		
+		if($specialFile == "/MediaServerTools/MediaServer/MediaServerConfig"){
+					#chomp $specialFile;
+					#print "$specialFile";
+		 			#print "Mounted Successfully\n";
+		 			
+		 			my $str = "7";
+					open FILE, ">/tmp/tmp_want_status.txt" or die $!;
+					print FILE $str;
+					close FILE;
+					return $specialFile;
+		}
+	
+}
+		
+#Mounts the drive
+system("mount $mountFroma $mountTo");
+
+#Subroutine That creates the temporary data file in /tmp
+findWanted();
+
+
+#More Variables
+my $tempfiles = "/tmp/tmp_want_status.txt";
+
+#Extracts the status from the data file in the /tmp directory
+open FILE, $tempfiles or die $!;
+my ($data, $n, $offset);
+while (($n = read FILE, $data, 4, $offset) != 0) {
+  #print "$data bytes read\n";
+  $offset += $n;
+}
+close FILE or die $!;
+
+if ($data == "7"){
+	system("clear");
+	myheader();
+	print "\n\nThe Device \"$mountFroma\" was Mounted at \"$mountTo\" $!\n";
+	system("rm -f $tempfiles");
+	print "Disk Mounted Succesfully\n\n\n";
+	
+	}elsif($data == "4"){
+		system("clear");
+		myheader();
+		print "\n\nThis is the wrong Mount, Tryin a Different Drive. $!\n\n";
+		sleep 1;
+		print "Unmounting...\n\n\n";
+		system("umount $mountTo");
+		sleep 2;
+		print "Mounting the other drive.\n";
+		system("mount $mountFromb $mountTo");
+		sleep 1;
+		
+		#Need to check Status again
+		findWanted();
+		
+		#Extracts the status from 2nd iteration of the data file in the /tmp directory
+		open FILE, $tempfiles or die $!;
+		my ($data, $n, $offset);
+		while (($n = read FILE, $data, 4, $offset) != 0) {
+ 		 #print "$data bytes read\n";
+  		$offset += $n;
+  		}
+		close FILE or die $!;
+  		
+  		if ($data == "7"){
+  			sleep 3;
+  			system("clear");
+  			myheader();
+			print "\n\nThe Device \"$mountFromb\" was Mounted at \"$mountTo\" $!\n";
+			system("rm -f $tempfiles");
+			print "Disk Mounted Succesfully\n\n\n";
+			}elsif($data == "4"){
+					system("clear");
+					myheader();
+					print "\n\nThis is the wrong Mount, No More Devices to Try. $!\n";
+					sleep 1;
+					print "Unmounting...\n\n\n";
+					system("umount $mountTo");
+					sleep 2;
+					print "No \"MediaServerFiles\" drive is available at this time.\n\n";
+					sleep 2;
+					print "Exiting Server File Mount Program....\n\n\n";
+					}
+	}else{print "I dont know whats going on.";}
+

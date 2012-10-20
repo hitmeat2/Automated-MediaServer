@@ -54,14 +54,19 @@ my $ServerTools_Files2F;
 my $ServerTools_Files2T;
 my $ServerTools_Files3F;
 my $ServerTools_Files3T;
+sub myHeader {
+		print "  :::::::: Media Server Configuration Setup File :::::::::  ";
+}
+
 
 #Install Needed Core Programs
 system("clear");
+myHeader();
 sleep 1;
 print "\n\n\n\n";
 print "Preparing to install Core Programs from the internet\n\n";
 sleep 2;
-system("yum install nano man wget zip unzip -y");
+system("yum install nano man wget zip unzip -y") == 0 or die "\n\nFailed to Install Core Programs. \nCheck the Internet Connection\n\n";
 print "\n\n\n";
 print "The Following programs have been installed \n----> nano \n----> man \n----> wget \n----> zip \n----> unzip\n\n";
 
@@ -71,7 +76,7 @@ $ssh_FilesT = "/etc/ssh/";
 copy($ssh_FilesF, $ssh_FilesT) or die "SSH File could not be copied $!";
 print "Restarting the OpenSSH Service. \n";
 sleep 1;
-system("service sshd restart");
+system("service sshd restart") == 0 or die "\n\nFailed to Restart sshd Service.\n\n";;
 sleep 1;
 print "\n\n\n\n";
 print "1. SSH File copied Successfully. Service Restarted \n";
@@ -131,9 +136,9 @@ sleep 1;
 $ServerTools_Files1F = "/MediaServerTools/MediaServer/help/MountServerFiles";
 $ServerTools_Files1T = "/MountServerFiles";
 $ServerTools_Files2F = "/MediaServerTools/MediaServer/help/HandBrake";
-$ServerTools_Files2T = "/HandBrake";
+$ServerTools_Files2T = "/usr/bin/HandBrake";
 $ServerTools_Files3F = "/MediaServerTools/MediaServer/help/PlexServer";
-$ServerTools_Files3T = "/PlexServer";
+$ServerTools_Files3T = "/usr/bin/PlexServer";
 copy($ServerTools_Files1F, $ServerTools_Files1T) or die "MediaServerTools Helper Files 1 could not be created $!";
 copy($ServerTools_Files2F, $ServerTools_Files2T) or die "MediaServerTools Helper Files 2 could not be created $!";
 copy($ServerTools_Files3F, $ServerTools_Files3T) or die "MediaServerTools Helper Files 3 could not be created $!";
@@ -159,7 +164,7 @@ print "\n\n\n\n";
 print "Preparing to install Media Server and HandBrake\n";
 sleep 2;
 print "---------------------------------------------------\n";
-system("yum install plexmediaserver.x86_64 handbrake-cli.x86_64 -y");
+system("yum install plexmediaserver.x86_64 handbrake-cli.x86_64 -y") == 0 or die "\n\nFailed to Install Plex Media Server\n\n";;
 print "---------------------------------------------------\n";
 print "PlexMediaServer & HandBrake have been Installed.\n";
 sleep 1;
@@ -169,7 +174,7 @@ print "\n\n\n\n";
 print "Installing the Media server and Ripping Programs local Updates\n";
 sleep 2;
 print "---------------------------------------------------\n";
-system("yum localupdate /opt/MediaServerTools/Programs/Plex/Updates/plexmediaserver-0.9.6.9.240-8fd9c6a.x86_64.rpm -y");
+system("yum localupdate /opt/MediaServerTools/Programs/Plex/Updates/plexmediaserver-0.9.6.9.240-8fd9c6a.x86_64.rpm -y") == 0 or die "\n\nFailed to Install Plex Media Server Update\n\n";;
 print "---------------------------------------------------\n";
 print "PlexMediaServer has been locally Updated.\n\n";
 sleep 1;
@@ -204,4 +209,4 @@ print "\nAll Sysconfig Files copied Successfully \n\n\n\n\n\n\n\n";
 
 
 
-#system("reboot");
+#system("reboot") == 0 or die "\n\nFailed to Reboot the System\n\n";;
