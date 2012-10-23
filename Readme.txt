@@ -1,65 +1,1 @@
-Install CentOS 6 -------------------------------------------
-	
-	*This will erase all previous data from the machine you are loading it onto, proceed with caution.
-			
-			1) Make sure the machine is powered off.
-			2) Insert the OS Loader USB Drive.
-					*Before you start
-						a) Ensure the Internet is connected via cat5 cable (Cord /No Wireless)
-						b) Ensure at Boot-up you have the boot from USB option available.
-						c) *If you do not have the boot from USB option, you will need to install via CD-ROM
-						d) **If you cannot install via CD-ROM you will need a technician to pre-install to your hard-drive
-			3) Select Your Language (English)
-			4) Select Your Country (US)
-			5) Select (URL) for Installation Method
-			6) Configure TCP/IP
-					*Ensure the asterick is selected in both categories, and that the first option is selected. (Just Like Below)
-								
-								[*] Enable IPv4 support
-											(*) Dynamic IP Config
-											( ) Manual config
-								
-								[*] Enable IPv6 support
-											(*) Automatic
-											( ) Dynamic
-											( ) Manual
-											
-			7) After Network Manager has setup your connection, Type in the following URL
-					
-					"http://mediaserver.ronnieblue.com/centos6" after typing the URL
-					*Do not Enable anything, or type any passwords. Just click OK.
-					**This will download the current version of CentOS6 and prepare it for install onto your system.
-					***It could Take a long time depending on the speed of your network connection.
-			8) After the Initial Installation is done, Select "Use Text Mode"
-			9) Use system clock is pre-selected, Select America/New York
-			10) Type the password "mediaserver" twice. Make sure its lower case.
-			11)Select Use Entire Hard Drive
-			12) Make sure the first drive is not selected only sdb. Select OK
-			12) Select write Changes to Disk.
-			14) After the Files have downloaded and are installed, Remove the thumb drive.
-			15) Select Reboot.
-			16) At the grub prompt Type: grub>"root (hd0,0)" and press ENTER.
-			17) Then Type: "setup (hd0)".
-			18) After the setup has ran Type: "reboot".		
-			19) The system will reboot immediately.
-					*A 3 second timer will start. you need to press any key before the time runs out to go into boot-up config mode.
-					 **If the time runs out, the machine will continuously restart. You will have to start over from step (19).
-					 a) With CentOS highlighted PRESS "e" to edit the boot process.
-					 b) You will now be temporarily changing the root from (hd1,0) to (hd0,0). Press "e" again with root highlighted.
-					 c) Backspace all the writing currently on the line then Press "Tab". An error show up, Don't worry it's normal.
-					 d) Type: "root (hd0,0)" on the line. (Ensure you type it exactly as written inside the " " or you will get an errer message. Press ENTER.
-					 e) You are returned to the highlighted menu screen. Press "b" to Boot the OS.
-					 f) You are now in CentOS 6.
-			18) Login with "root" password "mediaserver".
-			
-Configure Media Server -------------------------------------------
-			
-			19) Install the needed programs to run USB Setup. Type: "yum install perl -y" Press ENTER.
-			20) Several Updates will run, after they are complete you will need to create a Directory, mount the Configuration USB Drive, 
-				  and run the Media Server Setup.
-			21) Change to the root Directory, Type: "cd /" and Press ENTER.
-			21) Type: "mkdir /MediaServerTools" and Press ENTER.This will create MediaServerTools. (Ensure to use caps in the right place! NO SPACES.)
-			22) After the folder is created we will mount the Drive. Insert the USB Device Labeled "Media Server Setup".
-			23) Type: "mount /dev/sdb1 /MediaServerTools". Press ENTER. If all went well, the drive should mount and you wont even notice it.
-			24) Almost Done! Type: "perl /MediaServerTools/Setup" and Press ENTER. This will do all the rest of the work for you.
-						
+Install CentOS 6 ----------------------------------------------------------------	*This will erase all previous data from the machine you are loading it onto, proceed with caution.			1) Make sure the machine is powered off.2) Insert the OS Loader (Boot) USB Drive.		*Before you starta) Ensure the Internet is connected via cat5 cable (Cord /No Wireless)b) Ensure at Boot-up you have the boot from USB option available.c) *If you do not have the boot from USB option, you will need to install via CD-ROMd) **If you cannot install via CD-ROM you will need a technician to pre-install to your hard-drive3) Power on the Machine. After it loads up go to the next line.4) Select Your Language (English), Select Your Country (US)5) Select (URL) for Installation Method6) Configure TCP/IP		Ensure the “*” is selected in both categories, and that the first option is selected. (Just Like Below)										[*] Enable IPv4 support			(*) Dynamic IP Config			( ) Manual Config										[*] Enable IPv6 support			(*) Automatic			( ) Dynamic			( ) Manual											7) After Network Manager has setup your connection, Type in the following URL on the long, blank, blue line.					a. Type: "http://mediaserver.ronnieblue.com/centos6" after typing:b. *Do not Enable anything, or type any passwords. Just click OK.c. *This will download the current version of CentOS6 and prepare it for install onto your system.d. *It could take a long time depending on the speed of your network connection.8) After the Initial Installation is done, Select "Use Text Mode" (VNC is not enabled for this demonstration)9) Use system clock is pre-selected; Select America/New York, or your current Time Zone.10) Type the password "mediaserver". Make sure its lower case. Type "mediaserver" again in the confirmation field.11) The next screen will be the Hard Drive Installation Options							*Select Use Entire Hard Drive, and make sure to unselect the first drive which is the USB (Boot) Drive. (Follow the Description Below)								<Use entire drive>		<------( highlight this option "Use entire drive")	   Replace existing Linux system	   Use free space 												Which drive(s) do you want to use for the installation?[  ]	sda	2000MB (the name of the USB Drive)	<------(ensure there is NO "*" in the brackets.)[*]	sdb	5000MB (the name of the internal Hard Drive)	<------(use this option, "its the bigger drive.")											12) Ensure the first drive is not selected before continuing, and that only the sdb drive is selected. Then Select OK13) Select write Changes to Disk.14) After the Files have downloaded and are installed, remove the thumb drive. Select Reboot. The system will restart.15) Upon restart the Machine will be at a boot config screen because it cannot find the kernel for the Media Server. Follow the instructions below.16) At the grub> prompt Type: "root (hd0,0)" <always without the " "> and press ENTER.17) Then Type: "setup (hd0)".18) After the setup has run Type: "reboot".		19) The system will reboot, afterwards a grub screen. Press any key on the keyboard to stop the timer from running out on the grub screen.*A 3 second timer will start. You need to press any key before the time runs out.*If the time runs out, the machine will continuously restart. Start over from step (19).*After you stop the timer, you will be able to follow the instruction below.					a) With CentOS highlighted PRESS "e" to edit the boot process.b) You will now be temporarily changing the root from (hd1,0) to (hd0,0). Follow the next step thoroughlyc) Press "e" again with root highlighted.d) On the new screen, Backspace all the writing currently on the line. Press "Tab". An error message pops up, don’t worry it's normal.e) Type: "root (hd0,0)". (Ensure you type it exactly as written inside the " " or you will get an error message. Press ENTER.f) You are returned to the highlighted menu screen. Press "b" to Boot the OS.g) You are now in CentOS 6.					 18) Login with "root" password "mediaserver".			** If you have to restart the Machine for any reason before installing the Config Drive and running the setup, you will need to restart the installation from Step (15).			Configure Media Server -------------------------------------------			20) Insert the (Config) USB Drive.21) Install the needed programs to run USB Setup. Type: "yum install perl -y" Press ENTER.*Several Updates will run, after completion, you will need to:a) Create a Directory, b) Mount the (Config) USB Drive, c) Run the Media Server Setup.d) All noted in the instructions below. 							 22) Change to the root Directory, Type: "cd /" and Press ENTER.23) Type all of the commands listed below:a) a) Type: "mkdir /MediaServerTools" and Press ENTER (Ensure to use caps in the right places!)b) Type: "mount /dev/sdb1 /MediaServerTools". Press ENTER.c) Almost Done! d) Type: "perl /MediaServerTools/Setup" and Press ENTER. (This will do all the rest of the work for you.)						
