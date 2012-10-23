@@ -7,14 +7,39 @@ sub myHeader {
 		print "  :::::::: Handbrake DVD \& FILE Ripping Program :::::::::  ";
 }
 
+sub myunMountPeskys {
+		#Unmount any Drives that could cause a mishap
+		system('perl /opt/MediaServerTools/Programs/HandBrake/scripts/unMountDVD');
+		system ('perl umount /MediaServerTools');
+		return "1";
+}
+myunMountPeskys();
+
 system("clear");
 myHeader();
 print "\n\n\n";
-print "Please select a number between 1 and 3: \n\n";
-print '1) Rip a DVD';print "\n"; 
-print '2) Rip a File'; print "\n"; 
-print '3) Exit the Program';
-print "\n\nI Love You January\n";
+print "Welcome to the HandBrake Program Selection Screen\n";
+print "What do you want to do today: \n\n";
+print "-Program Options-\n";
+print '-----------------------------------------------------------------------------------'; print "\n";
+print '1) Rip a DVD			( Not Blue-Ray Ready Yet... )';print "\n"; 
+print '2) Rip a File			( Not Available Yet... )';print "\n";
+print '3) Exit the Program		( Exit Menu Screen & Program )'; print "\n";
+
+print "\n\n";
+print "-Configuration Options-\n";
+print '-----------------------------------------------------------------------------------'; print "\n";
+print '4) Restart Services		( Soft Restart /will not power-down the machine )'; print "\n";
+print '5) Mount Configuration Drive	( Ensure the Config (USB) or (DISK) is plugged in. )'; print "\n";
+print '6) unMount Configuration Drive	( UnMount the Config (USB) or (Disk) )'; print "\n";
+print '7) Run Configuration		( *Run Option 5 Before using this Option )'; print "\n";
+print "\n\n";
+print "-Machine Options-\n";
+print '-----------------------------------------------------------------------------------'; print "\n";
+print '8) Log Off			( Log Off as Current User )'; print "\n";
+print '9) Restart the Machine		( Automatic Power Down and Power Up )'; print "\n";
+print '10) Shutdown the Machine	( Power Off, Manual Power-on Required )'; print "\n";
+print "\n\nI Love You January, Kiss Alisa for me!\n";
 print "\n\n------> ";
 my $selection = <STDIN>;
 chomp ($selection);
@@ -25,5 +50,13 @@ switch ($selection) {
                case 1	{ system("perl /opt/MediaServerTools/Programs/HandBrake/scripts/RIP-DVD") == 0 or die "Failed to run HandBrake RIP-DVD\nExiting Program.\n\n"; }
                case 2	{ system("perl /opt/MediaServerTools/Programs/HandBrake/scripts/RIP-FILE") == 0 or die "Failed to run HandBrake RIP-FILE\nExiting Program.\n\n"; }
                case 3	{ die "\n\nExiting the HandBrake Program\n\n"; }
+               case 4	{ system("perl /opt/MediaServerTools/Restart-Services") == 0 or die "Failed to run HandBrake Restart-Services\nExiting Program.\n\n"; }
+               case 5	{ system("perl /opt/MediaServerTools/MountServerFiles") == 0 or die "Failed to run HandBrake MountServerFiles\nExiting Program.\n\n"; }
+               case 6	{ system("perl /opt/MediaServerTools/unMountServerFiles") == 0 or die "Failed to run HandBrake MountServerFiles\nExiting Program.\n\n"; }            
+               case 7	{ system("perl /MediaServerTools/MediaServer/MediaServerConfig") == 0 or die "Failed to run HandBrake MediaServerConfig\nExiting Program.\n\n"; }
+               case 8	{ system("perl /opt/MediaServerTools/Log-Off") == 0 or die "Failed to run Log-Off\nExiting Program.\n\n"; }
+               case 9	{ system("perl /opt/MediaServerTools/Hard-Restart") == 0 or die "Failed to run Hard-Restart\nExiting Program.\n\n"; }
+               case 10	{ system("perl /opt/MediaServerTools/Shut-Down") == 0 or die "Failed to run Shut-Down\nExiting Program.\n\n"; }
+              
        }
 

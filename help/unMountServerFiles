@@ -1,0 +1,17 @@
+#!/usr/bin/perl -w
+#unMountServerFiles
+use strict;
+
+my $configDrive = "/MediaServerTools";
+
+#Unmount System Configuration Drive
+system ("umount $configDrive");
+system("clear");
+if($? != 0){
+print "\n\n\n\nNo Drive is Mounted\n\n\n";
+}else{
+		system("rmdir /MediaServerTools");
+		print "\n\n\n\nConfiguration Drive unMounted Succesfully\n\n\n";}
+
+sleep 2;
+system ("HandBrake");

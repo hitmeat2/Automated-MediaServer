@@ -4,6 +4,7 @@ use strict;
 use File::Find;
 use File::Basename;
 no warnings 'redefine';
+use File::Path qw(make_path remove_tree);
 
 #Create a temporary file to handle requests
 sub createTMP {
@@ -12,12 +13,25 @@ sub createTMP {
 					print FILE $str;
 					close FILE;
 }
-
 createTMP();
+
+#Create Installation Directory
+sub InstallDirectory {
+		make_path('/MediaServerTools');
+}
+InstallDirectory();
 
 #Creates the header for my program
 sub myheader {
 		print "  :::::::: Mount Server Files Program :::::::::  ";
+}
+
+sub torunconfig {
+		print "\n\n\n";
+		print '  ** Select Run Configuration to setup the server again. **';
+		print "\n\n\n\n";
+		sleep 6;
+		system ("HandBrake");
 }
 
 #Select The Drive to Mount
@@ -92,6 +106,7 @@ if ($data == "7"){
 	print "\n\nThe Device \"$mountFroma\" was Mounted at \"$mountTo\" $!\n";
 	system("rm -f $tempfiles");
 	print "Disk Mounted Succesfully\n\n\n";
+	torunconfig();
 	
 	}elsif($data == "4"){
 		system("clear");
@@ -124,6 +139,7 @@ if ($data == "7"){
 			print "\n\nThe Device \"$mountFromb\" was Mounted at \"$mountTo\" $!\n";
 			system("rm -f $tempfiles");
 			print "Disk Mounted Succesfully\n\n\n";
+			torunconfig();
 			}elsif($data == "4"){
 					system("clear");
 					myheader();
@@ -135,6 +151,8 @@ if ($data == "7"){
 					print "No \"MediaServerFiles\" drive is available at this time.\n\n";
 					sleep 2;
 					print "Exiting Server File Mount Program....\n\n\n";
+					sleep 4;
+					system ("HandBrake");
 					}
 	}else{print "I dont know whats going on.";}
 

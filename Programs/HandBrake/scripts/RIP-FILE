@@ -2,4 +2,6 @@
 #RIP-FILE
 use strict;
 
-print "\n\nThis Feature is not available yet.\n\n";
+print "\n\nThis Feature is not available yet.\n";
+sleep 1;
+system ("HandBrake");

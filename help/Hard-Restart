@@ -1,0 +1,7 @@
+#!/usr/bin/perl -w
+#Hard-Restart
+use strict;
+
+print "Restarting the Media Server. \n";
+sleep 1;
+system("reboot") == 0 or die "\n\nFailed to Reboot.\n\n";

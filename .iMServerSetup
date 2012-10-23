@@ -1,5 +1,5 @@
 #!usr/bin/perl -w
-#MediaServerConfig
+#.IMServerSetup
 use warnings;
 use strict;
 use File::Copy;
@@ -41,35 +41,6 @@ my $HandBrakescripts_Files7T;
 my $HandBrakescripts_Files8F;
 my $HandBrakescripts_Files8T;
 
-sub myHeader {
-		print "  :::::::: Media Server Configuration Setup File :::::::::  ";
-}
-sub UnmountDrive {
-		print "\n\nunMounting the \"/MediaServertools\" Installation Drive...";
-		sleep 1;
-		system("umount /MediaServerTools") == 0 or die "\n\n Failed to unMount the Installation Drive \"/MediaServerTools\".";
-		print "\nInstallation Drive unMounted.";
-		sleep 1;
-		
-}
-sub removeInstallDir {
-		print "\n\nRemoving the \"/MediaServertools\" Installation Directory...";
-		sleep 1;
-		system("rmdir /MediaServerTools") == 0 or die "\n\n Failed to Remove the Installation Drive \"/MediaServerTools\".";
-		print "\nInstallation Directory Removed\n\n";
-		sleep 4;
-		system("clear");
-		print "\n\n";
-		print "	To get started type \"HandBrake\" \(Caps Sensitive\) from the command prompt.\n	Then press ENTER \n\n\n";
-		sleep 1;
-}
-
-system("clear");
-myHeader();
-sleep 1;
-print "\n\n\n\n";
-print "Preparing to Re-install Plex Media Server & HandBrake Files\n\n";
-
 #Make the directories needed for configuration
 make_path(
 '/opt/MediaServerTools/Programs/HandBrake/Updates' ,
@@ -80,7 +51,7 @@ make_path(
 '/opt/plex' , 
 '/home/plex/Movies'
 );
-print "2. All opt Directory Creation Scripts have run Successfully\n";
+print "1. All opt Directory Creation Scripts have run Successfully\n";
 sleep 1;
 
 #Copy the Update Files into the Newly created Programs Directories
@@ -88,7 +59,7 @@ sleep 1;
 $programupdate_FilesF = "/MediaServerTools/MediaServer/Programs/Plex/Updates/plexmediaserver-0.9.6.9.240-8fd9c6a.x86_64.rpm";
 $programupdate_FilesT = "/opt/MediaServerTools/Programs/Plex/Updates/plexmediaserver-0.9.6.9.240-8fd9c6a.x86_64.rpm";
 copy($programupdate_FilesF, $programupdate_FilesT) or die "Opt/MediaServerTools Files could not be created $!";
-print "3. Update files copied Successfully \n";
+print "2. Update files copied Successfully \n";
 sleep 1;
 
 #Copy the Update & Program Files into the Newly created Programs Directories
@@ -117,7 +88,7 @@ copy($HandBrakescripts_Files1F, $HandBrakescripts_Files1T) or die "HandBrake Scr
 copy($HandBrakescripts_Files2F, $HandBrakescripts_Files2T) or die "HandBrake Script Files could not be copied $!";
 copy($HandBrakescripts_Files3F, $HandBrakescripts_Files3T) or die "HandBrake Script Files could not be copied $!";
 copy($HandBrakescripts_Files4F, $HandBrakescripts_Files4T) or die "HandBrake Script Files could not be copied $!";
-print "4. Program Script files copied Successfully \n";
+print "3. Program Script files copied Successfully \n";
 sleep 1;
 
 #Copy the Media Server Tools Files into the Root Directory
@@ -160,7 +131,7 @@ chmod $mode, $ServerTools_Files3T;
 chmod $mode, $ServerTools_Files4T;
 chmod $mode, $ServerTools_Files5T;
 chmod $mode, $ServerTools_Files6T;
-print "5. Helper files copied Successfully \n";
+print "4. Helper files copied Successfully \n";
 sleep 1;
 
 #Copy the ssh Files
@@ -170,7 +141,7 @@ $yumrepo_Files1T = "/etc/yum.repos.d/plex.repo";
 $yumrepo_Files2T = "/etc/yum.repos.d/linuxtech.repo";
 copy($yumrepo_Files1F, $yumrepo_Files1T) or die "YumRepo File -plex.repo- could not be copied $!";
 copy($yumrepo_Files2F, $yumrepo_Files2T) or die "YumRepo File -linuxtech.repo- could not be copied $!";
-print "6. All YumRepo Files copied Successfully \n\n";
+print "5. All YumRepo Files copied Successfully \n\n";
 sleep 1;
 
 #Install the Media server and Ripping Programs
@@ -208,15 +179,3 @@ for $chownFiles (@files_to_chown) {
 }
 print "---------------------------------------------------\n";
 print "\nThe CHOWN operation was successful\n";
-
-#Restart Plex Media Services
-print "\nRestarting PlexMediaServer. \n";
-sleep 1;
-system("service plexmediaserver restart") == 0 or die "\n\nFailed to Restart Plex Media Server.\n\n";
-print "\n\n";
-print "All Services have been succesfully restarted.\n";
-
-UnmountDrive();
-removeInstallDir();
-
-#system("reboot") == 0 or die "\n\nFailed to Reboot the System\n\n";;

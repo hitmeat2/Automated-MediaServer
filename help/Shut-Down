@@ -1,0 +1,8 @@
+#!/usr/bin/perl -w
+#Shut-Down
+use strict;
+
+print "Powering Down the Media Server. \n";
+sleep 1;
+system("halt") == 0 or die "\n\nFailed to Power Down.\n\n";
+die;

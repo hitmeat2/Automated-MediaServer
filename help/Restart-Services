@@ -1,0 +1,27 @@
+#!/usr/bin/perl -w
+#Restart-Services
+use strict;
+
+sub myHeader {
+		print "  :::::::: Handbrake Restart Services Program :::::::::  ";
+}
+
+system("clear");
+myHeader();
+print "\n\n\n";
+print "Restarting the OpenSSH Service. \n";
+sleep 1;
+system("service sshd restart") == 0 or die "\n\nFailed to Restart sshd Service.\n\n";
+print "Restarting the Firewall. \n";
+sleep 1;
+system("service iptables restart") == 0 or die "\n\nFailed to Restart Firewall Service.\n\n";
+print "\n\nRestarting the Network. \n";
+sleep 1;
+system("service network restart") == 0 or die "\n\nFailed to Restart Network Service.\n\n";
+print "\nRestarting PlexMediaServer. \n";
+sleep 1;
+system("service plexmediaserver restart") == 0 or die "\n\nFailed to Restart Plex Media Server.\n\n";
+print "\n\n";
+print "All Services have been succesfully restarted.\n";
+sleep 5;
+system ("HandBrake");

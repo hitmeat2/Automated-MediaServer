@@ -5,13 +5,6 @@ use strict;
 sub myHeader {
 		print "  :::::::: Handbrake DVD Ripping Program :::::::::  ";
 }
-sub myunMountPeskys {
-		#Unmount any Drives that could cause a mishap
-		system('perl /opt/MediaServerTools/Programs/HandBrake/scripts/unMountDVD');
-		system ('perl umount /MediaServerTools');	
-}
-myunMountPeskys();
-
 
 sleep 1;
 system("clear");
@@ -69,5 +62,7 @@ sleep 1;
 system('perl ' . $script_directory . 'unMountDVD') == 0 or die "Failed to unMount DVD\n\n";
 print "DVD Released\n\n\n\n\n\n";
 
+sleep 4;
+system ("HandBrake");
 
 

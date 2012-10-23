@@ -1,0 +1,7 @@
+#!/usr/bin/perl -w
+#Log-Off
+use strict;
+
+print "Logging Off the Media Server as current User. \n";
+sleep 1;
+system("/logout");

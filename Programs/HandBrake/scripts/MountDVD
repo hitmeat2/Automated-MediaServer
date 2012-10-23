@@ -13,6 +13,8 @@ if ($? != 0){
 	system("mount $mountFrom1 $mountTo");
 		if($? != 0){
 		print "\n\n*No Drives Are Available, Exiting Mount Program. $!\n\n";
+		sleep 4;
+		system("HandBrake");
 		die "\n";
 		}
 }

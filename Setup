@@ -1,0 +1,111 @@
+#!usr/bin/perl -w
+#Setup
+use strict;
+use File::Copy;
+use File::Path qw(make_path remove_tree);
+
+my $ssh_FilesF;
+my $ssh_FilesT;
+my $sysconfig_Files1F;
+my $sysconfig_Files1T;
+my $sysconfig_Files2F;
+my $sysconfig_Files2T;
+my $sysconfig_Files3F;
+my $sysconfig_Files3T;
+my $sysconfig_Files4F;
+my $sysconfig_Files4T;
+my $sysconfig_Files5F;
+my $sysconfig_Files5T;
+
+sub myHeader {
+		print "  ::::::::::::::::: Media Server Setup :::::::::::::::::  ";
+}
+sub UnmountDrive {
+		print "\n\nunMounting the \"/MediaServertools\" Installation Drive...";
+		sleep 1;
+		system("umount /MediaServerTools") == 0 or die "\n\n Failed to unMount the Installation Drive \"/MediaServerTools\".";
+		print "\nInstallation Drive unMounted.";
+		sleep 1;
+}
+sub removeInstallDir {
+		print "\n\nRemoving the \"/MediaServertools\" Installation Directory...";
+		sleep 1;
+		system("rmdir /MediaServerTools") == 0 or die "\n\n Failed to Remove the Installation Drive \"/MediaServerTools\".";
+		print "\nInstallation Directory Removed\n\n";
+		sleep 4;
+		system("clear");
+		print "\n\n";
+		print "	To get started type \"HandBrake\" \(Caps Sensitive\) from the command prompt.\n	Then press ENTER \n\n\n";
+		sleep 1;
+}
+
+
+#Install Needed Core Programs
+system("clear");
+myHeader();
+sleep 1;
+print "\n\n\n\n";
+print "Preparing to install Core Programs from the internet\n\n";
+sleep 2;
+system("yum install nano man wget zip unzip -y") == 0 or die "\n\nFailed to Install Core Programs. \nCheck the Internet Connection\n\n";
+print "\n\n\n";
+print "The Following programs have been installed \n----> nano \n----> man \n----> wget \n----> zip \n----> unzip\n\n";
+
+
+#Copy the ssh Files for OpenSSH Access and Restart Service
+print "\nSetting up the OpenSSH Services... \n\n";
+$ssh_FilesF = "/MediaServerTools/MediaServer/configs/etc/ssh/sshd_config";
+$ssh_FilesT = "/etc/ssh/";
+copy($ssh_FilesF, $ssh_FilesT) or die "SSH File could not be copied $!";
+print "Restarting the OpenSSH Service. \n";
+sleep 1;
+system("service sshd restart") == 0 or die "\n\nFailed to Restart sshd Service.\n\n";
+sleep 1;
+print "SSH Service Setup Successfully. Service Restarted \n";
+
+
+#RUN The Media Server Config Here
+print "\nPreparing to run initial Media Server Setup...\n";
+system("/MediaServerTools/.iMServerSetup");
+sleep 2;
+print "\n\nInitial Setup ran Successfully. \n\n";
+
+
+#Copy the sysconfig Files
+print "Preparing to copy Sysconfig Files... \n";
+$sysconfig_Files1F = "/MediaServerTools/MediaServer/configs/etc/sysconfig/iptables";
+$sysconfig_Files2F = "/MediaServerTools/MediaServer/configs/etc/sysconfig/network";
+$sysconfig_Files3F = "/MediaServerTools/MediaServer/configs/etc/sysconfig/PlexMediaServer";
+$sysconfig_Files4F = "/MediaServerTools/MediaServer/configs/root/.bash_profile";
+$sysconfig_Files5F = "/MediaServerTools/MediaServer/configs/boot/grub/grub.conf";
+$sysconfig_Files1T = "/etc/sysconfig/iptables";
+$sysconfig_Files2T = "/etc/sysconfig/network";
+$sysconfig_Files3T = "/etc/sysconfig/PlexMediaServer";
+$sysconfig_Files4T = "/root/.bash_profile";
+$sysconfig_Files5T = "/boot/grub/grub.conf";
+copy($sysconfig_Files1F, $sysconfig_Files1T) or die "Sysconfig File -iptables- could not be copied $!";
+copy($sysconfig_Files2F, $sysconfig_Files2T) or die "Sysconfig File -network-could not be copied $!";
+copy($sysconfig_Files3F, $sysconfig_Files3T) or die "Sysconfig File -PlexMediaServer- could not be copied $!";
+copy($sysconfig_Files4F, $sysconfig_Files4T) or die "Root Startup Profile File -.bash_profile- could not be copied $!";
+copy($sysconfig_Files5F, $sysconfig_Files5T) or die "Grub Boot File -grub.conf- could not be copied $!";
+print "All Sysconfig Files copied Successfully \n\n\n";
+sleep 1;
+
+#Restart Critical Services
+print "Restarting the Firewall. \n";
+sleep 1;
+system("service iptables restart") == 0 or die "\n\nFailed to Restart Firewall Service.\n\n";
+print "\n\nRestarting the Network. \n";
+sleep 1;
+system("service network restart") == 0 or die "\n\nFailed to Restart Network Service.\n\n";
+print "\nRestarting PlexMediaServer. \n";
+sleep 1;
+system("service plexmediaserver restart") == 0 or die "\n\nFailed to Restart Plex Media Server.\n\n";
+print "\n\n";
+print "All Services have been succesfully restarted.\n";
+
+UnmountDrive();
+removeInstallDir();
+
+sleep 8;
+system("reboot") == 0 or die "\n\nFailed to Reboot the System\n\n";
