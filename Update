@@ -1,5 +1,5 @@
 #!usr/bin/perl -w
-#Setup
+#Update
 use strict;
 use File::Copy;
 use File::Path qw(make_path remove_tree);
@@ -18,7 +18,7 @@ my $sysconfig_Files5F;
 my $sysconfig_Files5T;
 
 sub myHeader {
-		print "  ::::::::::::::::: Media Server Setup :::::::::::::::::  ";
+		print "  ::::::::::::::::: Media Server Update :::::::::::::::::  ";
 }
 sub UnmountDrive {
 		print "\n\nunMounting the \"/MediaServertools\" Installation Drive...";
@@ -40,54 +40,42 @@ sub removeInstallDir {
 }
 
 
-#Install Needed Core Programs
+#Update Needed Core Programs
 system("clear");
 myHeader();
 sleep 1;
 print "\n\n\n\n";
-print "Preparing to install Core Programs from the internet\n\n";
+print "Preparing to Update Core Programs from the internet\n\n";
 sleep 2;
-system("yum install nano man wget zip unzip -y") == 0 or die "\n\nFailed to Install Core Programs. \nCheck the Internet Connection\n\n";
+system("yum update nano man wget zip unzip -y") == 0 or die "\n\nFailed to Update Core Programs. \nCheck the Internet Connection\n\n";
 print "\n\n\n";
-print "The Following programs have been installed \n----> nano \n----> man \n----> wget \n----> zip \n----> unzip\n\n";
-
-
-#Copy the ssh Files for OpenSSH Access and Restart Service
-print "\nSetting up the OpenSSH Services... \n\n";
-$ssh_FilesF = "/MediaServerTools/MediaServer/configs/etc/ssh/sshd_config";
-$ssh_FilesT = "/etc/ssh/";
-copy($ssh_FilesF, $ssh_FilesT) or die "SSH File could not be copied $!";
-print "Restarting the OpenSSH Service. \n";
-sleep 1;
-system("service sshd restart") == 0 or die "\n\nFailed to Restart sshd Service.\n\n";
-sleep 1;
-print "SSH Service Setup Successfully. Service Restarted \n";
+print "The Following programs have been updated \n----> nano \n----> man \n----> wget \n----> zip \n----> unzip\n\n";
 
 
 #RUN The Media Server Config Here
-print "\nPreparing to run initial Media Server Setup...\n";
-system("/MediaServerTools/\.iMServerSetup");
+print "\nPreparing to run Media Server Update...\n";
+system("/MediaServerTools/\.iMServerUpdate");
 sleep 2;
-print "\n\nInitial Setup ran Successfully. \n\n";
+print "\n\nUpdate ran Successfully. \n\n";
 
 
 #Copy the sysconfig Files
 print "Preparing to copy Sysconfig Files... \n";
 $sysconfig_Files1F = "/MediaServerTools/MediaServer/configs/etc/sysconfig/iptables";
-$sysconfig_Files2F = "/MediaServerTools/MediaServer/configs/etc/sysconfig/network";
-$sysconfig_Files3F = "/MediaServerTools/MediaServer/configs/etc/sysconfig/PlexMediaServer";
-$sysconfig_Files4F = "/MediaServerTools/MediaServer/configs/root/.bash_profile";
-$sysconfig_Files5F = "/MediaServerTools/MediaServer/configs/boot/grub/grub.conf";
+#$sysconfig_Files2F = "/MediaServerTools/MediaServer/configs/etc/sysconfig/network";
+#$sysconfig_Files3F = "/MediaServerTools/MediaServer/configs/etc/sysconfig/PlexMediaServer";
+#$sysconfig_Files4F = "/MediaServerTools/MediaServer/configs/root/.bash_profile";
+#$sysconfig_Files5F = "/MediaServerTools/MediaServer/configs/boot/grub/grub.conf";
 $sysconfig_Files1T = "/etc/sysconfig/iptables";
-$sysconfig_Files2T = "/etc/sysconfig/network";
-$sysconfig_Files3T = "/etc/sysconfig/PlexMediaServer";
-$sysconfig_Files4T = "/root/.bash_profile";
-$sysconfig_Files5T = "/boot/grub/grub.conf";
+#$sysconfig_Files2T = "/etc/sysconfig/network";
+#$sysconfig_Files3T = "/etc/sysconfig/PlexMediaServer";
+#$sysconfig_Files4T = "/root/.bash_profile";
+#$sysconfig_Files5T = "/boot/grub/grub.conf";
 copy($sysconfig_Files1F, $sysconfig_Files1T) or die "Sysconfig File -iptables- could not be copied $!";
-copy($sysconfig_Files2F, $sysconfig_Files2T) or die "Sysconfig File -network-could not be copied $!";
-copy($sysconfig_Files3F, $sysconfig_Files3T) or die "Sysconfig File -PlexMediaServer- could not be copied $!";
-copy($sysconfig_Files4F, $sysconfig_Files4T) or die "Root Startup Profile File -.bash_profile- could not be copied $!";
-copy($sysconfig_Files5F, $sysconfig_Files5T) or die "Grub Boot File -grub.conf- could not be copied $!";
+#copy($sysconfig_Files2F, $sysconfig_Files2T) or die "Sysconfig File -network-could not be copied $!";
+#copy($sysconfig_Files3F, $sysconfig_Files3T) or die "Sysconfig File -PlexMediaServer- could not be copied $!";
+#copy($sysconfig_Files4F, $sysconfig_Files4T) or die "Root Startup Profile File -.bash_profile- could not be copied $!";
+#copy($sysconfig_Files5F, $sysconfig_Files5T) or die "Grub Boot File -grub.conf- could not be copied $!";
 print "All Sysconfig Files copied Successfully \n\n\n";
 sleep 1;
 

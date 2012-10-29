@@ -1,0 +1,188 @@
+#!usr/bin/perl -w
+#.IMServerUpdate
+use warnings;
+use strict;
+use File::Copy;
+#use File::Path qw(make_path remove_tree); 
+
+
+#File & Directory Updating features
+my $updateFile = "Mservtools_updates.tar.gz";
+my $extractDirectory = "/MSUpdater/Current/MediaServerTools";
+my $favLocalDir = "MediaServerTools";
+#my $localplexFile = "plexmediaserver-0.9.6.9.240-8fd9c6a.x86_64.rpm";
+my $mswebToolsDirectory = "http://mediaserver.ronnieblue.com/Mservtools/";
+my $mslocalTempDIR = "/tmp/MediaServer";
+my $mslocalFile = $mslocalTempDIR . "/" . $updateFile;
+my $msweb_Dir_File = $mswebToolsDirectory . $updateFile;
+my $mslocalMoveFile = $mslocalTempDIR . $extractDirectory;
+
+
+#Skipped in this update Version 1
+#my $programupdate_FilesF;
+#my $programupdate_FilesT;
+
+my $HandBrakescripts_Files1F;
+my $HandBrakescripts_Files1T;
+my $HandBrakescripts_Files2F;
+my $HandBrakescripts_Files2T;
+my $HandBrakescripts_Files3F;
+my $HandBrakescripts_Files3T;
+my $HandBrakescripts_Files4F;
+my $HandBrakescripts_Files4T;
+my $HandBrakescripts_Files5F;
+my $HandBrakescripts_Files5T;
+my $HandBrakescripts_Files6F;
+my $HandBrakescripts_Files6T;
+my $HandBrakescripts_Files7F;
+my $HandBrakescripts_Files7T;
+my $HandBrakescripts_Files8F;
+my $HandBrakescripts_Files8T;
+
+
+#Updating wget to retrieve the tar file.
+print "\n\n\n\n";
+print "Preparing to update files from the Internet\n";
+print 'Updating ... ';
+print "\n\n";
+system("mkdir $mslocalTempDIR");
+sleep 1;
+system("wget -P $mslocalTempDIR $msweb_Dir_File");
+sleep 2;
+my $mode1 = 0755;   
+chmod $mode1, $updateFile;
+sleep 1;
+system("tar -C $mslocalTempDIR -zxf $mslocalFile");
+sleep 1;
+system("mv $mslocalMoveFile $mslocalTempDIR/");
+sleep 1;
+system("cp -a $mslocalTempDIR/$favLocalDir /");
+sleep 1;
+system("rm -rf $mslocalTempDIR/");
+sleep 1;
+print "1. Wget Update Completed Successfully, Sweeeeeet! \n";
+
+
+
+#Skipped in this update Version 1
+#Make the directories needed for configuration
+#make_path(
+#'/opt/MediaServerTools/Programs/HandBrake/Updates' ,
+#'/opt/MediaServerTools/Programs/HandBrake/RAW/RIPPED' ,
+#'/opt/MediaServerTools/Programs/HandBrake/scripts' ,
+#'/opt/MediaServerTools/Programs/HandBrake/cdrom' ,
+#'/opt/MediaServerTools/Programs/Plex/Updates' , 
+#'/opt/plex' , 
+#'/home/plex/Movies'
+#);
+#print "1. All opt Directory Creation Scripts have run Successfully\n";
+#sleep 1;
+
+
+#Skipped in this update Version 1
+#Copy the Update Files into the Newly created Programs Directories
+####I need to check for file existence and overwriting capabilities
+#$programupdate_FilesF = "/MediaServerTools/MediaServer/Programs/Plex/Updates/$localplexFile";
+#$programupdate_FilesT = "/opt/MediaServerTools/Programs/Plex/Updates/$localplexFile";
+#copy($programupdate_FilesF, $programupdate_FilesT) or die "Opt/MediaServerTools Files could not be created $!";
+#print "2. Update files copied Successfully \n";
+#sleep 1;
+
+
+
+
+#Copy the Update & Program Files into the Newly created Programs Directories
+####I need to check for file existence and overwriting capabilities
+my $handbrakefromdir = "/MediaServerTools/MediaServer/Programs/HandBrake/scripts/";
+my $handbraketodir = "/opt/MediaServerTools/Programs/HandBrake/scripts/";
+my $hbFile1 = "RIP-DVD";
+my $hbFile2 = "MountDVD";
+my $hbFile3 = "unMountDVD";
+my $hbFile4 = "RIP-FILE";
+#my $hbFile5 = "";
+#my $hbFile6 = "";
+#my $hbFile7 = "";
+#my $hbFile8 = "";
+#my $hbFile9 = "";
+#my $hbFile10 = "";
+$HandBrakescripts_Files1F = $handbrakefromdir . $hbFile1;
+$HandBrakescripts_Files1T = $handbraketodir . $hbFile1;
+$HandBrakescripts_Files2F =  $handbrakefromdir . $hbFile2;
+$HandBrakescripts_Files2T = $handbraketodir . $hbFile2;
+$HandBrakescripts_Files3F =  $handbrakefromdir . $hbFile3;
+$HandBrakescripts_Files3T = $handbraketodir . $hbFile3;
+$HandBrakescripts_Files4F =  $handbrakefromdir . $hbFile4;
+$HandBrakescripts_Files4T = $handbraketodir . $hbFile4;
+copy($HandBrakescripts_Files1F, $HandBrakescripts_Files1T) or die "HandBrake Script Files could not be copied $!";
+copy($HandBrakescripts_Files2F, $HandBrakescripts_Files2T) or die "HandBrake Script Files could not be copied $!";
+copy($HandBrakescripts_Files3F, $HandBrakescripts_Files3T) or die "HandBrake Script Files could not be copied $!";
+copy($HandBrakescripts_Files4F, $HandBrakescripts_Files4T) or die "HandBrake Script Files could not be copied $!";
+print "2. Program Script files copied Successfully \n";
+sleep 1;
+
+#Copy the Media Server Tools Files into the Root Directory
+####I need to check for file existence and overwriting capabilities
+my $ServTools_Files1 = "MountServerFiles";
+my $ServTools_Files2 = "HandBrake";
+my $ServTools_Files3 = "unMountServerFiles";
+my $ServTools_Files4 = "Restart-Services";
+my $ServTools_Files5 = "Hard-Restart";
+my $ServTools_Files6 = "Shut-Down";
+my $ServTools_Files7;
+my $ServTools_Files8;
+my $ServTools_Files9;
+my $ServTools_Files10;
+my $ServTools_BIN = "/usr/bin/";
+my $ServTools_OPT = "/opt/MediaServerTools/";
+my $ServTools_Dir = "/MediaServerTools/MediaServer/help/";
+my $ServerTools_Files1F = $ServTools_Dir . $ServTools_Files1;
+my $ServerTools_Files1T = $ServTools_OPT . $ServTools_Files1;
+my $ServerTools_Files2F = $ServTools_Dir . $ServTools_Files2;
+my $ServerTools_Files2T = $ServTools_BIN . $ServTools_Files2;
+my $ServerTools_Files3F = $ServTools_Dir . $ServTools_Files3;
+my $ServerTools_Files3T = $ServTools_OPT . $ServTools_Files3;
+my $ServerTools_Files4F = $ServTools_Dir . $ServTools_Files4;
+my $ServerTools_Files4T = $ServTools_OPT . $ServTools_Files4;
+my $ServerTools_Files5F = $ServTools_Dir . $ServTools_Files5;
+my $ServerTools_Files5T = $ServTools_OPT . $ServTools_Files5;
+my $ServerTools_Files6F = $ServTools_Dir . $ServTools_Files6;
+my $ServerTools_Files6T = $ServTools_OPT . $ServTools_Files6;
+copy($ServerTools_Files1F, $ServerTools_Files1T) or die "MediaServerTools Helper Files 1 could not be created $!";
+copy($ServerTools_Files2F, $ServerTools_Files2T) or die "MediaServerTools Helper Files 2 could not be created $!";
+copy($ServerTools_Files3F, $ServerTools_Files3T) or die "MediaServerTools Helper Files 3 could not be created $!";
+copy($ServerTools_Files4F, $ServerTools_Files4T) or die "MediaServerTools Helper Files 4 could not be created $!";
+copy($ServerTools_Files5F, $ServerTools_Files5T) or die "MediaServerTools Helper Files 5 could not be created $!";
+copy($ServerTools_Files6F, $ServerTools_Files6T) or die "MediaServerTools Helper Files 6 could not be created $!";
+my $mode = 0755;   
+chmod $mode, $ServerTools_Files1T;	
+chmod $mode, $ServerTools_Files2T;
+chmod $mode, $ServerTools_Files3T;
+chmod $mode, $ServerTools_Files4T;
+chmod $mode, $ServerTools_Files5T;
+chmod $mode, $ServerTools_Files6T;
+print "3. Helper files copied Successfully \n";
+sleep 1;
+
+
+#Install the Media server and Ripping Programs
+print "\n\n\n\n";
+print "Preparing to update Media Server and HandBrake\n";
+sleep 2;
+print "---------------------------------------------------\n";
+system("yum update plexmediaserver.x86_64 handbrake-cli.x86_64 -y") == 0 or die "\n\nFailed to Install Plex Media Server\n\n";;
+print "---------------------------------------------------\n";
+print "PlexMediaServer & HandBrake have been Updated.\n";
+sleep 1;
+
+
+#Skipped in this update Version 1
+#Install the Media server and Ripping Programs local Updates
+#print "\n\n\n\n";
+#print "Installing the Media server and Ripping Programs local Updates\n";
+#sleep 2;
+#print "---------------------------------------------------\n";
+#system("yum localupdate /opt/MediaServerTools/Programs/Plex/Updates/$localplexFile -y") == 0 or die "\n\nFailed to Install Plex Media #Server Update\n\n";;
+#print "---------------------------------------------------\n";
+#print "PlexMediaServer has been locally Updated.\n\n";
+#sleep 1;
+

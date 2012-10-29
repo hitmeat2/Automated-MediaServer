@@ -28,7 +28,8 @@ sub myheader {
 
 sub torunconfig {
 		print "\n\n\n";
-		print '  ** Select Run Configuration to setup the server again. **';
+		print '  **		Select "Get Updates" to run the automatic update.		**';print "\n";
+		print '  **			You must have an internet connection.			**';
 		print "\n\n\n\n";
 		sleep 6;
 		system ("HandBrake");
@@ -47,6 +48,7 @@ sub torunconfig {
 #my $mountFrom = "/dev/" . $deviceDrive;
 my $mountFroma = "/dev/sda1";
 my $mountFromb = "/dev/sdb1";
+my $mountFromc = "/dev/sdc1";
 my $mountTo = "/MediaServerTools";
 
 
@@ -82,11 +84,15 @@ sub wanted {
 }
 		
 #Mounts the drive
+#This is the "sda" Iteration---------------------------------------------------------
+system("clear");
+myheader();
+print "\n\nAttempting to mount the Config Drive. ( $mountFroma ) \n";
+sleep 2;
 system("mount $mountFroma $mountTo");
 
 #Subroutine That creates the temporary data file in /tmp
 findWanted();
-
 
 #More Variables
 my $tempfiles = "/tmp/tmp_want_status.txt";
@@ -100,22 +106,24 @@ while (($n = read FILE, $data, 4, $offset) != 0) {
 }
 close FILE or die $!;
 
+
 if ($data == "7"){
+	#This Iteration Confirms Mount "sda"-----------------------------------
 	system("clear");
 	myheader();
 	print "\n\nThe Device \"$mountFroma\" was Mounted at \"$mountTo\" $!\n";
 	system("rm -f $tempfiles");
 	print "Disk Mounted Succesfully\n\n\n";
 	torunconfig();
-	
 	}elsif($data == "4"){
+		#This is the "sdb" Iteration---------------------------------------------------
 		system("clear");
 		myheader();
-		print "\n\nThis is the wrong Mount, Tryin a Different Drive. $!\n\n";
-		sleep 1;
+		print "\n\nThis is the wrong Mount, Tryin a Different Drive. ( $mountFromb ) $!\n\n";
+		sleep 2;
 		print "Unmounting...\n\n\n";
 		system("umount $mountTo");
-		sleep 2;
+		sleep 1;
 		print "Mounting the other drive.\n";
 		system("mount $mountFromb $mountTo");
 		sleep 1;
@@ -128,31 +136,68 @@ if ($data == "7"){
 		my ($data, $n, $offset);
 		while (($n = read FILE, $data, 4, $offset) != 0) {
  		 #print "$data bytes read\n";
-  		$offset += $n;
-  		}
+  		$offset += $n; }
 		close FILE or die $!;
-  		
-  		if ($data == "7"){
-  			sleep 3;
-  			system("clear");
-  			myheader();
-			print "\n\nThe Device \"$mountFromb\" was Mounted at \"$mountTo\" $!\n";
-			system("rm -f $tempfiles");
-			print "Disk Mounted Succesfully\n\n\n";
-			torunconfig();
-			}elsif($data == "4"){
-					system("clear");
-					myheader();
-					print "\n\nThis is the wrong Mount, No More Devices to Try. $!\n";
-					sleep 1;
-					print "Unmounting...\n\n\n";
-					system("umount $mountTo");
-					sleep 2;
-					print "No \"MediaServerFiles\" drive is available at this time.\n\n";
-					sleep 2;
-					print "Exiting Server File Mount Program....\n\n\n";
-					sleep 4;
-					system ("HandBrake");
-					}
+		
+   		
+   				if ($data == "7"){
+  						#This Iteration Confirms Mount "sdb"-----------------------------------
+  						sleep 1;
+  						system("clear");
+  						myheader();
+						print "\n\nThe Device \"$mountFromb\" was Mounted at \"$mountTo\" $!\n";
+						system("rm -f $tempfiles");
+						print "Disk Mounted Succesfully\n\n\n";
+						torunconfig();
+						}elsif($data == "4"){
+								#This is the "sdc" Iteration---------------------------------------------------
+								system("clear");
+								myheader();
+								print "\n\nThis is the wrong Mount, Tryin a Different Drive. ( $mountFromc ) $!\n\n";
+								sleep 2;
+								print "Unmounting...\n\n\n";
+								system("umount $mountTo");
+								sleep 1;
+								print "Mounting the other drive.\n";
+								system("mount $mountFromc $mountTo");
+								sleep 1;
+		
+								#Need to check Status again
+								findWanted();
+		
+								#Extracts the status from 2nd iteration of the data file in the /tmp directory
+								open FILE, $tempfiles or die $!;
+								my ($data, $n, $offset);
+								while (($n = read FILE, $data, 4, $offset) != 0) {
+ 					 			#print "$data bytes read\n";
+  								$offset += $n; }
+								close FILE or die $!;
+				
+					
+										if ($data == "7"){
+												#This Iteration Confirms Mount "sdc"-----------------------------------
+  												sleep 1;
+  												system("clear");
+  												myheader();
+												print "\n\nThe Device \"$mountFromc\" was Mounted at \"$mountTo\" $!\n";
+												system("rm -f $tempfiles");
+												print "Disk Mounted Succesfully\n\n\n";
+												torunconfig();
+												}elsif($data == "4"){
+														#This Iteration kills all, stops trying-----------------------------------
+														system("clear");
+														myheader();
+														print "\n\n( $mountFromc ) Did not work either, No More Devices to Try. $!\n";
+														sleep 2;
+														print "Unmounting...\n\n\n";
+														system("umount $mountTo");
+														sleep 1;
+														print "No \"MediaServerFiles\" drive is available at this time.\n\n";
+														sleep 1;
+														print "Exiting Server File Mount Program....\n\n\n";
+														sleep 3;
+														system ("HandBrake");
+														}
+								}
 	}else{print "I dont know whats going on.";}
 
