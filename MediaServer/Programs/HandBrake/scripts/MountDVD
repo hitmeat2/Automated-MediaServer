@@ -6,6 +6,8 @@ my $mountStatus;
 my $mountFrom0 = '/dev/dvd';
 my $mountFrom1 = '/dev/dvd1';
 my $mountFrom2 = '/dev/dvd2';
+my $mountFrom3 = '/dev/dvd3';
+my $mountFrom4 = '/dev/dvd4';
 my $mountTo = '/opt/MediaServerTools/Programs/HandBrake/cdrom';
 
 system("mount $mountFrom0 $mountTo");
@@ -16,11 +18,19 @@ if ($? != 0){
 				print "\nSecond Drive is not Available. Checking Additional Drives. $!\n";
 				system("mount $mountFrom2 $mountTo");
 					if($? != 0){
-						print "\n\n*No Drives Are Available, Exiting Mount Program. $!\n\n";
-						sleep 4;
-						system("HandBrake");
-						die "\n";
-						}
-			}
+							print "\nThird Drive is not Available. Checking Additional Drives. $!\n";
+							system("mount $mountFrom3 $mountTo");
+								if($? != 0){
+										print "\nFourth Drive is not Available. Checking Additional Drives. $!\n";
+										system("mount $mountFrom4 $mountTo");
+									if($? != 0){
+										print "\n\n*No Drives Are Available, Exiting Mount Program. $!\n\n";
+										sleep 4;
+										system("HandBrake");
+										die "\n";
+									}
+								}
+					}
+		}
 }
 print "Disk Mounted Succesfully\n";
